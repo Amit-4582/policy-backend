@@ -1,7 +1,6 @@
-
 # Policy Insurance - Backend API
 
-This is the backend for the AI Avatar application, built with Node.js, Express, and Sequelize ORM. It provides APIs for generating and managing AI-powered avatar functionalities. This README provides detailed, step-by-step instructions to set up and run the application locally on an Ubuntu system.
+This is the backend for the Policy Insurance application, built with Node.js, Express, and Sequelize ORM. It provides APIs for generating and creating policies and aslo we have a functionalities which calculate and illustrate list of data. This README provides detailed, step-by-step instructions to set up and run the application locally on an Ubuntu system.
 
 ## Prerequisites
 
@@ -22,6 +21,10 @@ Clone the project repository from GitHub to your local machine.
 
 ```bash
 git clone https://github.com/Amit-4582/policy-backend.git
+```
+
+Go to the directory
+```bash
 cd policy-backend
 ```
 
@@ -74,7 +77,6 @@ npm install
 ```
 
 This will install dependencies such as `express`, `sequelize`, `mysql2`, `dotenv`, `nodemon`, `cross-env`, and others. If you encounter issues, ensure `package-lock.json` is present, or delete it and rerun `npm install`.
-
 
 ### 4. Create and Configure Environment Files
 
