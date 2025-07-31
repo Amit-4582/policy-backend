@@ -148,14 +148,6 @@ Create `.env` files in the project root.
    chmod 600 .env
 ```
 
-#### 5.3 Configure Application to Use Environment Files
-
-The application uses `dotenv` to load the correct `.env` file based on `NODE_ENV`. Ensure the following is in your main application file (e.g., `app.js`):
-
-```javascript
-require('dotenv').config({ path: `.env.${process.env.NODE_ENV}` });
-```
-
 If this is not already in the codebase, check the repository's documentation for how environment variables are loaded.
 
 ### 5. Set Up Sequelize
@@ -199,65 +191,3 @@ The server should start on the port specified in the environment file (default: 
 ```
 Server running on http://localhost:8080
 ```
-
-### 7. Test the API
-
-Use a tool like [Postman](https://www.postman.com/) or `curl` to test the API endpoints:
-
-```bash
-curl http://localhost:8080/api/v1/health
-```
-
-Check the repository's documentation or `routes` folder for available endpoints.
-
-### 8. Troubleshooting
-
-* **Node Version Issues** : Use `nvm` to switch to Node.js 18.x:
-
-```bash
-  nvm install 18
-  nvm use 18
-```
-
-* **MySQL Connection Errors** : Verify the `MYSQL_*` variables in `.env.development` or `.env.production` match your MySQL setup. Ensure MySQL is running:
-
-```bash
-  sudo systemctl status mysql.service
-```
-
-* **Dependency Errors** : Delete `node_modules` and `package-lock.json`, then rerun `npm install`.
-* **Sequelize Errors** : Ensure the `mysql2` driver is installed:
-
-```bash
-  npm install mysql2
-```
-
-* **Environment Variable Errors** : Ensure the correct `.env` file is loaded based on `NODE_ENV`. Verify all required variables are set and there are no typos (e.g., `FLASK_FILE_PATH`).
-
-### 9. Project Structure
-
-A typical project structure may look like:
-
-```
-ai_avatar_backend/
-├── config/
-│   └── config.js
-├── models/
-│   └── index.js
-├── routes/
-│   └── api.js
-├── migrations/
-├── seeders/
-├── .env
-├── package.json
-├── app.js
-└── README.md
-```
-
-* `config/`: Database configuration
-* `models/`: Sequelize models
-* `routes/`: API routes
-* `migrations/`: Database migration files
-* `seeders/`: Seed data for the database
-* `app.js`: Main application entry point
-
