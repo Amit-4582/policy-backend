@@ -3,7 +3,6 @@ require("dotenv").config();
 const express = require("express");
 const bodyParser = require("body-parser");
 const cors = require("cors");
-const rateLimit = require("express-rate-limit");
 
 // CORE CONFIG MODULES
 const sequelize = require("./core-configuration/sequelize/sequelize-config");
@@ -16,12 +15,7 @@ const { verifyToken } = require("./middlewares/verifyToken");
 
 // Import Routes
 const authRoutes = require("./routes/authRoutes");
-const projectRoutes = require("./routes/projectRoutes");
-const avatarRoutes = require("./routes/avatarRoutes");
-const chatRoutes = require("./routes/chatRoutes");
-
-// Import new Flask Routes
-const flaskRoutes = require("./routes/flaskRoutes");
+const policyDetailRoutes = require("./routes/policyDetailRoutes");
 
 const app = express();
 const PORT = process.env.PORT || 5005;
@@ -34,13 +28,6 @@ app.use(cors());
 app.use(express.json());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
-app.use(
-  rateLimit({
-    windowMs: 60 * 1000,
-    max: 500,
-    message: "Too many requests, please try again later.",
-  })
-);
 
 // Health Check Endpoint
 app.get("/", (req, res) => res.send("Hello, world!").end());
@@ -51,9 +38,7 @@ app.use(`${BASE_URL}/auth`, authRoutes);
 // Protected Routes
 app.use(verifyToken);
 
-app.use(`${BASE_URL}/projects`, projectRoutes);
-
-app.use(`${BASE_URL}/avatars`, avatarRoutes);
+app.use(`${BASE_URL}/policy-detail`, policyDetailRoutes);
 
 // Database Connection & Server Startup
 db.sequelize
