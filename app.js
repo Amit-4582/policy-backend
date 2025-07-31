@@ -5,12 +5,14 @@ const bodyParser = require("body-parser");
 const cors = require("cors");
 
 // CORE CONFIG MODULES
+const logger = require("./core-configuration/logger/log-config");
 const sequelize = require("./core-configuration/sequelize/sequelize-config");
 
 // DB MODELS MODULES
 const db = require("./models");
 
 // MIDDLEWARES MODULES
+const loggerMiddleware = require("./middlewares/loggerMiddleware");
 const { verifyToken } = require("./middlewares/verifyToken");
 
 // Import Routes
@@ -28,6 +30,7 @@ app.use(cors());
 app.use(express.json());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
+app.use(loggerMiddleware);
 
 // Health Check Endpoint
 app.get("/", (req, res) => res.send("Hello, world!").end());
@@ -38,7 +41,7 @@ app.use(`${BASE_URL}/auth`, authRoutes);
 // Protected Routes
 app.use(verifyToken);
 
-app.use(`${BASE_URL}/policy-detail`, policyDetailRoutes);
+// app.use(`${BASE_URL}/policy-detail`, policyDetailRoutes);
 
 // Database Connection & Server Startup
 db.sequelize
