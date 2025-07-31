@@ -1,0 +1,70 @@
+require("dotenv").config();
+
+const express = require("express");
+const bodyParser = require("body-parser");
+const cors = require("cors");
+const rateLimit = require("express-rate-limit");
+
+// CORE CONFIG MODULES
+const sequelize = require("./core-configuration/sequelize/sequelize-config");
+
+// DB MODELS MODULES
+const db = require("./models");
+
+// MIDDLEWARES MODULES
+const { verifyToken } = require("./middlewares/verifyToken");
+
+// Import Routes
+const authRoutes = require("./routes/authRoutes");
+const projectRoutes = require("./routes/projectRoutes");
+const avatarRoutes = require("./routes/avatarRoutes");
+const chatRoutes = require("./routes/chatRoutes");
+
+// Import new Flask Routes
+const flaskRoutes = require("./routes/flaskRoutes");
+
+const app = express();
+const PORT = process.env.PORT || 5005;
+const BASE_URL = process.env.BASE_URL || "/api/v1";
+
+logger.info(`Running in ${process.env.NODE_ENV} environment`);
+
+// Middleware Configuration
+app.use(cors());
+app.use(express.json());
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(
+  rateLimit({
+    windowMs: 60 * 1000,
+    max: 500,
+    message: "Too many requests, please try again later.",
+  })
+);
+
+// Health Check Endpoint
+app.get("/", (req, res) => res.send("Hello, world!").end());
+
+// Public Routes
+app.use(`${BASE_URL}/auth`, authRoutes);
+
+// Protected Routes
+app.use(verifyToken);
+
+app.use(`${BASE_URL}/projects`, projectRoutes);
+
+app.use(`${BASE_URL}/avatars`, avatarRoutes);
+
+// Database Connection & Server Startup
+db.sequelize
+  .authenticate()
+  .then(() => {
+    logger.info("Database connection established successfully.");
+    return sequelize.sync();
+  })
+  .then(() => {
+    app.listen(PORT, () => logger.info(`Server running on PORT ${PORT}`));
+  })
+  .catch((err) => {
+    logger.error("Database connection failed:", err);
+  });
