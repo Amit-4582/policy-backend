@@ -2,7 +2,7 @@ const Sequelize = require("sequelize");
 const sequelize = require("../core-configuration/sequelize/sequelize-config");
 
 const User = require("./user")(sequelize);
-const PolicyDetail = require("./policydetails")(sequelize);
+const PolicyDetail = require("./policydetail")(sequelize);
 
 const db = {
   User,

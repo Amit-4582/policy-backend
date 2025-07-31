@@ -1,10 +1,8 @@
-'use strict';
-
-/** @type {import('sequelize-cli').Migration} */
+"use strict";
 
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable('PolicyDetails', {
+    await queryInterface.createTable("PolicyDetails", {
       id: {
         type: Sequelize.UUID,
         defaultValue: Sequelize.UUIDV4,
@@ -16,28 +14,43 @@ module.exports = {
         allowNull: false,
       },
       gender: {
-        type: Sequelize.ENUM('male', 'female', 'other'),
+        type: Sequelize.ENUM("Male", "Female", "Other"),
         allowNull: false,
       },
       sumAssured: {
         type: Sequelize.DECIMAL(15, 2),
         allowNull: false,
+        validate: {
+          min: 5000000, // Minimum enforced at model level with dynamic check
+        },
       },
       modalPremium: {
         type: Sequelize.DECIMAL(15, 2),
         allowNull: false,
+        validate: {
+          min: 10000,
+          max: 50000,
+        },
       },
       premiumFrequency: {
-        type: Sequelize.ENUM("monthly", "quarterly", "semi-yearly", "yearly"),
+        type: Sequelize.ENUM("Yearly", "Half-Yearly", "Monthly"),
         allowNull: false,
       },
       pt: {
         type: Sequelize.INTEGER,
         allowNull: false,
+        validate: {
+          min: 10,
+          max: 20,
+        },
       },
       ppt: {
         type: Sequelize.INTEGER,
         allowNull: false,
+        validate: {
+          min: 5,
+          max: 10,
+        },
       },
       createdAt: {
         allowNull: false,
@@ -50,6 +63,6 @@ module.exports = {
     });
   },
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable('PolicyDetails');
-  }
+    await queryInterface.dropTable("PolicyDetails");
+  },
 };

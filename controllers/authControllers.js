@@ -12,11 +12,8 @@ const {
 const logger = require("../core-configuration/logger/log-config");
 const { successResponse, errorResponse } = require("../utils/handleResponse");
 
-// Determine the environment (default to 'development')
-const environment = process.env.NODE_ENV || "development";
-
 // Load the appropriate .env file
-dotenv.config({ path: `.env.${environment}` });
+dotenv.config();
 
 // FUNCTION TO SIGNUP FOR ADMIN
 const signUpUser = async (req, res) => {

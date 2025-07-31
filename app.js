@@ -41,7 +41,7 @@ app.use(`${BASE_URL}/auth`, authRoutes);
 // Protected Routes
 app.use(verifyToken);
 
-// app.use(`${BASE_URL}/policy-detail`, policyDetailRoutes);
+app.use(`${BASE_URL}/policy`, policyDetailRoutes);
 
 // Database Connection & Server Startup
 db.sequelize
