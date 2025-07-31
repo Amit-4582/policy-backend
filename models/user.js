@@ -13,6 +13,38 @@ module.exports = (sequelize) => {
         primaryKey: true,
         allowNull: false,
       },
+      name: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        validate: {
+          notEmpty: true,
+          is: /^[A-Za-z\s]{2,}$/i,
+          len: [2, 100], 
+        },
+      },
+      dob: {
+        type: DataTypes.DATEONLY,
+        allowNull: false,
+        validate: {
+          notEmpty: true,
+          isDate: true,
+          isBefore: new Date().toISOString().split("T")[0], 
+          isOldEnough(value) {
+            const minAgeDate = new Date();
+            minAgeDate.setFullYear(minAgeDate.getFullYear() - 13);
+            if (new Date(value) > minAgeDate) {
+              throw new Error("You must be at least 13 years old");
+            }
+          },
+        },
+      },
+      contactNo: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        validate: {
+          notEmpty: true,
+        },
+      },
       emailId: {
         type: DataTypes.STRING,
         allowNull: false,
